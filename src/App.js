@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './CSS/App.css';
 
 function App() {
   const [accessToken, setAccessToken] = useState();
 
-
   //Credentials
   let clientID = "53580";
   let clientSecret = "5f77952f808641b8eefdc45602e60052ee6b15df";
-  // let accessToken = "3d3f0766b91a64aba4d12eebfff1e829eb3c5adc";
 
   // refresh token and call address
   let refreshToken = "41e1e358ee38cb1cbb99d3a9dd75cee3ae283310";
@@ -28,6 +26,7 @@ function App() {
   })
 
   function getActivities(){
+    console.log(accessToken, "accessToken")
     if(accessToken){
       fetch(callActivities)
       .then((res)=> console.log(res.json()))
