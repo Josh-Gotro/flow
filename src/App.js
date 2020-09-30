@@ -18,7 +18,6 @@ function App() {
   const callActivities = `https://www.strava.com/api/v3/athlete/activities?access_token=${accessToken}`
 
   useEffect(() => {
-    console.log(callRefresh)
     fetch(callRefresh, {
       method: 'POST'
     })
@@ -28,14 +27,16 @@ function App() {
     })
   })
 
-  // function getActivities(){
-  //   fetch(callActivities)
-  //   .then((res)=> console.log(res.json()))
-  // }
+  function getActivities(){
+    if(accessToken){
+      fetch(callActivities)
+      .then((res)=> console.log(res.json()))
+    }
+  }
 
   return (
     <div className="App">
-      {accessToken}
+      {getActivities()}
         STRAVAAAAA FOR THE FLOWWWWWW
     </div>
   );
