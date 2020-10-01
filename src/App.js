@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './CSS/App.css';
 
-function App() {
-  const [accessToken, setAccessToken] = useState();
 
-  //Credentials
+function App() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [activities, setActivities] = useState({})
+
+  //Strava Credentials
   let clientID = "53580";
   let clientSecret = "5f77952f808641b8eefdc45602e60052ee6b15df";
 
@@ -12,51 +14,40 @@ function App() {
   let refreshToken = "41e1e358ee38cb1cbb99d3a9dd75cee3ae283310";
   const callRefresh = `https://www.strava.com/oauth/token?client_id=${clientID}&client_secret=${clientSecret}&refresh_token=${refreshToken}&grant_type=refresh_token`
   
-  // Call for all activities, be sure access_token is not expired
-  const callActivities = `https://www.strava.com/api/v3/athlete/activities?access_token=${accessToken}`
+  // endpoint for read-all activities. temporary token is added in getActivities()
+  const callActivities = `https://www.strava.com/api/v3/athlete/activities?access_token=`
 
+  // Use refresh token to get current access token
   useEffect(() => {
     fetch(callRefresh, {
       method: 'POST'
     })
-    .then((res) => res.json())
-    .then((result) => {
-      setAccessToken(result.access_token)
-    })
-  })
+    .then(res => res.json())
+    .then(result => getActivities(result.access_token))
+  }, [callRefresh])
 
-  function getActivities(){
-    console.log(accessToken, "accessToken")
-    if(accessToken){
-      fetch(callActivities)
-      .then((res)=> console.log(res.json()))
-    }
+  // use current access token to call all activities
+  function getActivities(access){
+    console.log(callActivities + access)
+      fetch(callActivities + access)
+      .then(res => res.json())
+      .then(data => setActivities(data), setIsLoading(prev => !prev))
+      .catch(e => console.log(e))
+  }
+
+  function showActivities(){
+    if(isLoading) return <div>LOADING</div>
+    if(!isLoading) return <div>GOTCHA BOOTY</div>
   }
 
   return (
     <div className="App">
-      {getActivities()}
-        STRAVAAAAA FOR THE FLOWWWWWW
+      {showActivities()}
     </div>
   );
 }
 
 export default App;
-
-
-// http://www.strava.com/oauth/authorize?client_id=53580&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=activity:read_all
-// 19d8bcfb85a90b6758bee214badd34d8583ec15a
-// 4ab917fc00cfd41304680247d26c3575b367156b
-// 3efc7a520665fea99aa0fb41455a7b381412ff85
-// 7cdb485ffd3cad0a3599d1088694713604e15fa5
-// 7f3d0a37c1a955e2d4608dfecab6173f475beca8
-
-// https://www.strava.com/oauth/token?client_id=53580&client_secret=5f77952f808641b8eefdc45602e60052ee6b15df&code=7f3d0a37c1a955e2d4608dfecab6173f475beca8&grant_type=authorization_code
-// accessToken: 3d3f0766b91a64aba4d12eebfff1e829eb3c5adc
-
-
-
-
 
 // REFRESH CALL RETURNS CURRENT ACCESS TOKEN AND EXPIRY
 // {
