@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import DayCard from './DayCard.js';
 import './CSS/App.css';
 
 
@@ -28,7 +29,7 @@ function App() {
 
   // use current access token to call all activities
   function getActivities(access){
-    console.log(callActivities + access)
+    // console.log(callActivities + access)
       fetch(callActivities + access)
       .then(res => res.json())
       .then(data => setActivities(data), setIsLoading(prev => !prev))
@@ -36,8 +37,28 @@ function App() {
   }
 
   function showActivities(){
-    if(isLoading) return <div>LOADING</div>
-    if(!isLoading) return <div>GOTCHA BOOTY</div>
+    if(isLoading) return <>LOADING</>
+    if(!isLoading) {
+      activityCards();
+    }
+  }
+
+  function activityCards(){
+    return activities.length > 0 && activities.map(act => {
+      // console.log(act.start_date)
+      let temp = act.start_date
+      let curDay = [];
+
+      if(act.start_date === temp) {
+        console.log("date is temp")
+        curDay.push(act)
+        console.log(act)
+      }
+        if(act.start_date > temp){
+          temp = act.start_date;
+          return <DayCard key={curDay[0].start_date} act={curDay} />
+      }
+    })
   }
 
   return (
@@ -57,3 +78,8 @@ export default App;
 //   "expires_in": 20969,
 //   "refresh_token": "41e1e358ee38cb1cbb99d3a9dd75cee3ae283310"
 // }
+
+// "2020-10-03T16:26:50Z"
+//  YYYY-MM-DD'T'HH:MM:SS'Z'
+// T is 
+// Z is timezone
