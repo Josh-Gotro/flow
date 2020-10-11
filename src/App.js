@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DayCard from './DayCard.js';
+// import DayCard from './DayCard.js';
 import './CSS/App.css';
 
 
@@ -39,27 +39,28 @@ function App() {
   function showActivities(){
     if(isLoading) return <>LOADING</>
     if(!isLoading) {
-      activityCards();
+      // activityCards();
+      console.log(activities)
     }
   }
 
-  function activityCards(){
-    return activities.length > 0 && activities.map(act => {
-      // console.log(act.start_date)
-      let temp = act.start_date
-      let curDay = [];
+  // function activityCards(){
+  //   return activities.length > 0 && activities.map(act => {
+  //     // console.log(act.start_date)
+  //     let temp = act.start_date
+  //     let curDay = [];
 
-      if(act.start_date === temp) {
-        console.log("date is temp")
-        curDay.push(act)
-        console.log(act)
-      }
-        if(act.start_date > temp){
-          temp = act.start_date;
-          return <DayCard key={curDay[0].start_date} act={curDay} />
-      }
-    })
-  }
+  //     if(act.start_date === temp) {
+  //       console.log("date is temp")
+  //       curDay.push(act)
+  //       console.log(act)
+  //     }
+  //       if(act.start_date > temp){
+  //         temp = act.start_date;
+  //         return <DayCard key={curDay[0].start_date} act={curDay} />
+  //     }
+  //   })
+  // }
 
   return (
     <div className="App">
